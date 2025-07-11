@@ -1,647 +1,629 @@
 // vCard generation
-        function generateVCard() {
-            let vcard = 'BEGIN:VCARD\nVERSION:3.0\n';
-            
-            // Add production identifier
-            vcard += 'PRODID:-//Comtap//Comtap Customizer 1.0//EN\n';
-            
-            // Add revision timestamp
-            vcard += `REV:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z\n`;
-            
-            // Names
-            for (let i = 1; i <= recordCounters.name; i++) {
-                const record = document.getElementById(`name-record-${i}`);
-                if (record) {
-                    const first = document.getElementById(`name-first-${i}`).value;
-                    const last = document.getElementById(`name-last-${i}`).value;
-                    const middle = document.getElementById(`name-middle-${i}`).value;
-                    const prefix = document.getElementById(`name-prefix-${i}`).value;
-                    const suffix = document.getElementById(`name-suffix-${i}`).value;
-                    
-                    if (first || last) {
-                        vcard += `N:${last};${first};${middle};${prefix};${suffix}\n`;
-                        vcard += `FN:${prefix} ${first} ${middle} ${last} ${suffix}`.replace(/\s+/g, ' ').trim() + '\n';
-                    }
-                }
+function generateVCard() {
+let vcard = 'BEGIN:VCARD\nVERSION:3.0\n';
+
+// Add production identifier
+vcard += 'PRODID:-//Comtap//Comtap Customizer 1.0//EN\n';
+
+// Add revision timestamp
+vcard += `REV:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z\n`;
+
+// Names
+for (let i = 1; i <= recordCounters.name; i++) { const record=document.getElementById(`name-record-${i}`); if (record) {
+    const first=document.getElementById(`name-first-${i}`).value; const
+    last=document.getElementById(`name-last-${i}`).value; const
+    middle=document.getElementById(`name-middle-${i}`).value; const
+    prefix=document.getElementById(`name-prefix-${i}`).value; const
+    suffix=document.getElementById(`name-suffix-${i}`).value; if (first || last) { vcard
+    +=`N:${last};${first};${middle};${prefix};${suffix}\n`; vcard +=`FN:${prefix} ${first} ${middle} ${last}
+    ${suffix}`.replace(/\s+/g, ' ' ).trim() + '\n' ; } } } // Nicknames for (let i=1; i <=recordCounters.nickname; i++)
+    { const record=document.getElementById(`nickname-record-${i}`); if (record) { const
+    nickname=document.getElementById(`nickname-value-${i}`).value; if (nickname) { vcard +=`NICKNAME:${nickname}\n`; } }
+    } // Titles for (let i=1; i <=recordCounters.title; i++) { const
+    record=document.getElementById(`title-record-${i}`); if (record) { const
+    title=document.getElementById(`title-value-${i}`).value; if (title) { vcard +=`TITLE:${title}\n`; } } } // Roles for
+    (let i=1; i <=recordCounters.role; i++) { const record=document.getElementById(`role-record-${i}`); if (record) {
+    const role=document.getElementById(`role-value-${i}`).value; if (role) { vcard +=`ROLE:${role}\n`; } } } //
+    Organizations for (let i=1; i <=recordCounters.org; i++) { const record=document.getElementById(`org-record-${i}`);
+    if (record) { const name=document.getElementById(`org-name-${i}`).value; const
+    department=document.getElementById(`org-department-${i}`).value; if (name) { vcard +=`ORG:${name}`; if (department)
+    { vcard +=`;${department}`; } vcard +='\n' ; } } } // Categories for (let i=1; i <=recordCounters.category; i++) {
+    const record=document.getElementById(`category-record-${i}`); if<!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>vCard Customizer</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
-            
-            // Nicknames
-            for (let i = 1; i <= recordCounters.nickname; i++) {
-                const record = document.getElementById(`nickname-record-${i}`);
-                if (record) {
-                    const nickname = document.getElementById(`nickname-value-${i}`).value;
-                    if (nickname) {
-                        vcard += `NICKNAME:${nickname}\n`;
-                    }
-                }
-            }
-            
-            // Titles
-            for (let i = 1; i <= recordCounters.title; i++) {
-                const record = document.getElementById(`title-record-${i}`);
-                if (record) {
-                    const title = document.getElementById(`title-value-${i}`).value;
-                    if (title) {
-                        vcard += `TITLE:${title}\n`;
-                    }
-                }
-            }
-            
-            // Roles
-            for (let i = 1; i <= recordCounters.role; i++) {
-                const record = document.getElementById(`role-record-${i}`);
-                if (record) {
-                    const role = document.getElementById(`role-value-${i}`).value;
-                    if (role) {
-                        vcard += `ROLE:${role}\n`;
-                    }
-                }
-            }
-            
-            // Organizations
-            for (let i = 1; i <= recordCounters.org; i++) {
-                const record = document.getElementById(`org-record-${i}`);
-                if (record) {
-                    const name = document.getElementById(`org-name-${i}`).value;
-                    const department = document.getElementById(`org-department-${i}`).value;
-                    if (name) {
-                        vcard += `ORG:${name}`;
-                        if (department) {
-                            vcard += `;${department}`;
-                        }
-                        vcard += '\n';
-                    }
-                }
-            }
-            
-            // Categories
-            for (let i = 1; i <= recordCounters.category; i++) {
-                const record = document.getElementById(`category-record-${i}`);
-                if<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vCard Customizer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-        
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .section {
-            margin-bottom: 25px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .section:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .section-title {
-            font-size: 1.3em;
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        .add-button {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .add-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-        
-        .record {
-            background: white;
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 12px;
-            border: 2px solid #e3f2fd;
-            position: relative;
-            animation: slideIn 0.3s ease;
-        }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .record-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .remove-button {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s ease;
-        }
-        
-        .remove-button:hover {
-            transform: scale(1.05);
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #555;
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .error {
-            color: #e74c3c;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-        
-        .valid {
-            border-color: #27ae60 !important;
-        }
-        
-        .invalid {
-            border-color: #e74c3c !important;
-        }
-        
-        .address-lookup {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        
-        .generate-section {
-            text-align: center;
-            margin-top: 30px;
-            padding: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            color: white;
-        }
-        
-        .generate-button {
-            background: white;
-            color: #667eea;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .generate-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .vcard-output {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-family: 'Courier New', monospace;
-            white-space: pre-wrap;
-            font-size: 12px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        @media (max-width: 768px) {
-            .two-column {
-                grid-template-columns: 1fr;
-            }
-            
-            .container {
+
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
                 padding: 20px;
             }
-        }
-        
-        .lookup-results {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            max-height: 200px;
-            overflow-y: auto;
-            position: absolute;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .lookup-item {
-            padding: 10px;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-            transition: background 0.2s ease;
-        }
-        
-        .lookup-item:hover {
-            background: #f0f8ff;
-        }
-        
-        .lookup-item:last-child {
-            border-bottom: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Comtap Customizer</h1>
-        
-        <div id="vcard-form">
-            <!-- Contact Information Sections -->
-            <div class="section">
-                <h3 class="section-title">Personal Name</h3>
-                <div id="name-section">
-                    <button class="add-button" onclick="addNameRecord()">Add Name</button>
+
+            .container {
+                max-width: 900px;
+                margin: 0 auto;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 30px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            }
+
+            h1 {
+                text-align: center;
+                color: #2c3e50;
+                margin-bottom: 30px;
+                font-size: 2.5em;
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .section {
+                margin-bottom: 25px;
+                padding: 20px;
+                background: rgba(255, 255, 255, 0.7);
+                border-radius: 15px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                transition: all 0.3s ease;
+            }
+
+            .section:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            }
+
+            .section-title {
+                font-size: 1.3em;
+                color: #2c3e50;
+                margin-bottom: 15px;
+                font-weight: 600;
+            }
+
+            .add-button {
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            }
+
+            .add-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            }
+
+            .record {
+                background: white;
+                padding: 20px;
+                margin: 15px 0;
+                border-radius: 12px;
+                border: 2px solid #e3f2fd;
+                position: relative;
+                animation: slideIn 0.3s ease;
+            }
+
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .record-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+
+            .remove-button {
+                background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 12px;
+                transition: all 0.3s ease;
+            }
+
+            .remove-button:hover {
+                transform: scale(1.05);
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: 500;
+                color: #555;
+            }
+
+            input,
+            select,
+            textarea {
+                width: 100%;
+                padding: 12px;
+                border: 2px solid #e1e1e1;
+                border-radius: 8px;
+                font-size: 14px;
+                transition: all 0.3s ease;
+            }
+
+            input:focus,
+            select:focus,
+            textarea:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+            .error {
+                color: #e74c3c;
+                font-size: 12px;
+                margin-top: 5px;
+            }
+
+            .valid {
+                border-color: #27ae60 !important;
+            }
+
+            .invalid {
+                border-color: #e74c3c !important;
+            }
+
+            .address-lookup {
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+            }
+
+            .generate-section {
+                text-align: center;
+                margin-top: 30px;
+                padding: 30px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 15px;
+                color: white;
+            }
+
+            .generate-button {
+                background: white;
+                color: #667eea;
+                border: none;
+                padding: 15px 40px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .generate-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            }
+
+            .vcard-output {
+                background: #2c3e50;
+                color: #ecf0f1;
+                padding: 20px;
+                border-radius: 8px;
+                margin-top: 15px;
+                font-family: 'Courier New', monospace;
+                white-space: pre-wrap;
+                font-size: 12px;
+                max-height: 300px;
+                overflow-y: auto;
+            }
+
+            .two-column {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+
+            @media (max-width: 768px) {
+                .two-column {
+                    grid-template-columns: 1fr;
+                }
+
+                .container {
+                    padding: 20px;
+                }
+            }
+
+            .lookup-results {
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                max-height: 200px;
+                overflow-y: auto;
+                position: absolute;
+                width: 100%;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .lookup-item {
+                padding: 10px;
+                cursor: pointer;
+                border-bottom: 1px solid #eee;
+                transition: background 0.2s ease;
+            }
+
+            .lookup-item:hover {
+                background: #f0f8ff;
+            }
+
+            .lookup-item:last-child {
+                border-bottom: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Comtap Customizer</h1>
+
+            <div id="vcard-form">
+                <!-- Contact Information Sections -->
+                <div class="section">
+                    <h3 class="section-title">Personal Name</h3>
+                    <div id="name-section">
+                        <button class="add-button" onclick="addNameRecord()">Add Name</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Phone Numbers</h3>
-                <div id="phone-section">
-                    <button class="add-button" onclick="addPhoneRecord()">Add Phone</button>
+
+                <div class="section">
+                    <h3 class="section-title">Phone Numbers</h3>
+                    <div id="phone-section">
+                        <button class="add-button" onclick="addPhoneRecord()">Add Phone</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Email Addresses</h3>
-                <div id="email-section">
-                    <button class="add-button" onclick="addEmailRecord()">Add Email</button>
+
+                <div class="section">
+                    <h3 class="section-title">Email Addresses</h3>
+                    <div id="email-section">
+                        <button class="add-button" onclick="addEmailRecord()">Add Email</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Addresses</h3>
-                <div id="address-section">
-                    <button class="add-button" onclick="addAddressRecord()">Add Address</button>
+
+                <div class="section">
+                    <h3 class="section-title">Addresses</h3>
+                    <div id="address-section">
+                        <button class="add-button" onclick="addAddressRecord()">Add Address</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Websites</h3>
-                <div id="url-section">
-                    <button class="add-button" onclick="addUrlRecord()">Add Website</button>
+
+                <div class="section">
+                    <h3 class="section-title">Websites</h3>
+                    <div id="url-section">
+                        <button class="add-button" onclick="addUrlRecord()">Add Website</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Organizations</h3>
-                <div id="org-section">
-                    <button class="add-button" onclick="addOrgRecord()">Add Organization</button>
+
+                <div class="section">
+                    <h3 class="section-title">Organizations</h3>
+                    <div id="org-section">
+                        <button class="add-button" onclick="addOrgRecord()">Add Organization</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Titles</h3>
-                <div id="title-section">
-                    <button class="add-button" onclick="addTitleRecord()">Add Title</button>
+
+                <div class="section">
+                    <h3 class="section-title">Titles</h3>
+                    <div id="title-section">
+                        <button class="add-button" onclick="addTitleRecord()">Add Title</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Nicknames</h3>
-                <div id="nickname-section">
-                    <button class="add-button" onclick="addNicknameRecord()">Add Nickname</button>
+
+                <div class="section">
+                    <h3 class="section-title">Nicknames</h3>
+                    <div id="nickname-section">
+                        <button class="add-button" onclick="addNicknameRecord()">Add Nickname</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Roles</h3>
-                <div id="role-section">
-                    <button class="add-button" onclick="addRoleRecord()">Add Role</button>
+
+                <div class="section">
+                    <h3 class="section-title">Roles</h3>
+                    <div id="role-section">
+                        <button class="add-button" onclick="addRoleRecord()">Add Role</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Categories</h3>
-                <div id="category-section">
-                    <button class="add-button" onclick="addCategoryRecord()">Add Category</button>
+
+                <div class="section">
+                    <h3 class="section-title">Categories</h3>
+                    <div id="category-section">
+                        <button class="add-button" onclick="addCategoryRecord()">Add Category</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Photos</h3>
-                <div id="photo-section">
-                    <button class="add-button" onclick="addPhotoRecord()">Add Photo</button>
+
+                <div class="section">
+                    <h3 class="section-title">Photos</h3>
+                    <div id="photo-section">
+                        <button class="add-button" onclick="addPhotoRecord()">Add Photo</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Logos</h3>
-                <div id="logo-section">
-                    <button class="add-button" onclick="addLogoRecord()">Add Logo</button>
+
+                <div class="section">
+                    <h3 class="section-title">Logos</h3>
+                    <div id="logo-section">
+                        <button class="add-button" onclick="addLogoRecord()">Add Logo</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Sounds</h3>
-                <div id="sound-section">
-                    <button class="add-button" onclick="addSoundRecord()">Add Sound</button>
+
+                <div class="section">
+                    <h3 class="section-title">Sounds</h3>
+                    <div id="sound-section">
+                        <button class="add-button" onclick="addSoundRecord()">Add Sound</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Birthdate</h3>
-                <div id="bday-section">
-                    <button class="add-button" onclick="addBdayRecord()">Add Birthday</button>
+
+                <div class="section">
+                    <h3 class="section-title">Birthdate</h3>
+                    <div id="bday-section">
+                        <button class="add-button" onclick="addBdayRecord()">Add Birthday</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Anniversary</h3>
-                <div id="anniversary-section">
-                    <button class="add-button" onclick="addAnniversaryRecord()">Add Anniversary</button>
+
+                <div class="section">
+                    <h3 class="section-title">Anniversary</h3>
+                    <div id="anniversary-section">
+                        <button class="add-button" onclick="addAnniversaryRecord()">Add Anniversary</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Gender</h3>
-                <div id="gender-section">
-                    <button class="add-button" onclick="addGenderRecord()">Add Gender</button>
+
+                <div class="section">
+                    <h3 class="section-title">Gender</h3>
+                    <div id="gender-section">
+                        <button class="add-button" onclick="addGenderRecord()">Add Gender</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Instant Messaging</h3>
-                <div id="impp-section">
-                    <button class="add-button" onclick="addImppRecord()">Add IM Contact</button>
+
+                <div class="section">
+                    <h3 class="section-title">Instant Messaging</h3>
+                    <div id="impp-section">
+                        <button class="add-button" onclick="addImppRecord()">Add IM Contact</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Geographic Location</h3>
-                <div id="geo-section">
-                    <button class="add-button" onclick="addGeoRecord()">Add Location</button>
+
+                <div class="section">
+                    <h3 class="section-title">Geographic Location</h3>
+                    <div id="geo-section">
+                        <button class="add-button" onclick="addGeoRecord()">Add Location</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Time Zone</h3>
-                <div id="tz-section">
-                    <button class="add-button" onclick="addTzRecord()">Add Time Zone</button>
+
+                <div class="section">
+                    <h3 class="section-title">Time Zone</h3>
+                    <div id="tz-section">
+                        <button class="add-button" onclick="addTzRecord()">Add Time Zone</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">Notes</h3>
-                <div id="note-section">
-                    <button class="add-button" onclick="addNoteRecord()">Add Note</button>
+
+                <div class="section">
+                    <h3 class="section-title">Notes</h3>
+                    <div id="note-section">
+                        <button class="add-button" onclick="addNoteRecord()">Add Note</button>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Non-Contact Customizations -->
-            <div class="section">
-                <h3 class="section-title">Product Customizations</h3>
-                <div id="custom-section">
-                    <div class="record">
-                        <div class="form-group">
-                            <label>Backing Color</label>
-                            <input type="color" id="backing-color" value="#000000">
-                            <small style="color: #666; font-size: 12px;">Background color for the product</small>
-                        </div>
-                        <div class="form-group">
-                            <label>Face Color</label>
-                            <input type="color" id="face-color" value="#ffffff" onchange="validateFaceColor()">
-                            <small style="color: #666; font-size: 12px;">Text/QR code color - must be brighter than backing color</small>
-                            <div id="face-color-error" class="error" style="display: none;"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>Font</label>
-                            <select id="font-family">
-                                <option value="SF Pro Display" style="font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;">SF Pro Display</option>
-                                <option value="SF Pro Text" style="font-family: 'SF Pro Text', system-ui, -apple-system, sans-serif;">SF Pro Text</option>
-                                <option value="SF Compact Display" style="font-family: 'SF Compact Display', system-ui, -apple-system, sans-serif;">SF Compact Display</option>
-                                <option value="SF Compact Text" style="font-family: 'SF Compact Text', system-ui, -apple-system, sans-serif;">SF Compact Text</option>
-                                <option value="SF Mono" style="font-family: 'SF Mono', monospace;">SF Mono</option>
-                                <option value="New York" style="font-family: 'New York', serif;">New York</option>
-                                <option value="Helvetica Neue" style="font-family: 'Helvetica Neue', sans-serif;">Helvetica Neue</option>
-                                <option value="Helvetica" style="font-family: 'Helvetica', sans-serif;">Helvetica</option>
-                                <option value="Arial" style="font-family: 'Arial', sans-serif;">Arial</option>
-                                <option value="Avenir Next" style="font-family: 'Avenir Next', sans-serif;">Avenir Next</option>
-                                <option value="Avenir" style="font-family: 'Avenir', sans-serif;">Avenir</option>
-                                <option value="Menlo" style="font-family: 'Menlo', monospace;">Menlo</option>
-                                <option value="Monaco" style="font-family: 'Monaco', monospace;">Monaco</option>
-                                <option value="Courier New" style="font-family: 'Courier New', monospace;">Courier New</option>
-                                <option value="Times New Roman" style="font-family: 'Times New Roman', serif;">Times New Roman</option>
-                                <option value="Times" style="font-family: 'Times', serif;">Times</option>
-                                <option value="Palatino" style="font-family: 'Palatino', serif;">Palatino</option>
-                                <option value="Georgia" style="font-family: 'Georgia', serif;">Georgia</option>
-                                <option value="Trebuchet MS" style="font-family: 'Trebuchet MS', sans-serif;">Trebuchet MS</option>
-                                <option value="Verdana" style="font-family: 'Verdana', sans-serif;">Verdana</option>
-                                <option value="Futura" style="font-family: 'Futura', sans-serif;">Futura</option>
-                                <option value="Optima" style="font-family: 'Optima', sans-serif;">Optima</option>
-                                <option value="Gill Sans" style="font-family: 'Gill Sans', sans-serif;">Gill Sans</option>
-                                <option value="Lucida Grande" style="font-family: 'Lucida Grande', sans-serif;">Lucida Grande</option>
-                                <option value="Chalkboard SE" style="font-family: 'Chalkboard SE', fantasy;">Chalkboard SE</option>
-                                <option value="Marker Felt" style="font-family: 'Marker Felt', fantasy;">Marker Felt</option>
-                                <option value="Noteworthy" style="font-family: 'Noteworthy', fantasy;">Noteworthy</option>
-                                <option value="Papyrus" style="font-family: 'Papyrus', fantasy;">Papyrus</option>
-                                <option value="Brush Script MT" style="font-family: 'Brush Script MT', cursive;">Brush Script MT</option>
-                                <option value="Zapfino" style="font-family: 'Zapfino', cursive;">Zapfino</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Preview</label>
-                            <div id="color-preview" style="padding: 20px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold; transition: all 0.3s ease;">
-                                Sample Text / QR Code Area
+
+                <!-- Non-Contact Customizations -->
+                <div class="section">
+                    <h3 class="section-title">Product Customizations</h3>
+                    <div id="custom-section">
+                        <div class="record">
+                            <div class="form-group">
+                                <label>Backing Color</label>
+                                <input type="color" id="backing-color" value="#000000">
+                                <small style="color: #666; font-size: 12px;">Background color for the product</small>
                             </div>
-                        </div>
-                        <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                            <strong>⚠️ Color Matching Disclaimer:</strong>
-                            <p style="margin: 5px 0 0 0; font-size: 14px; color: #856404;">
-                                Color matching will be performed to the best of our ability. Custom or currently unavailable color schemes may result in longer ordering and shipping times.
-                            </p>
+                            <div class="form-group">
+                                <label>Face Color</label>
+                                <input type="color" id="face-color" value="#ffffff" onchange="validateFaceColor()">
+                                <small style="color: #666; font-size: 12px;">Text/QR code color - must be brighter than
+                                    backing color</small>
+                                <div id="face-color-error" class="error" style="display: none;"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Font</label>
+                                <select id="font-family">
+                                    <option value="SF Pro Display"
+                                        style="font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;">SF
+                                        Pro Display</option>
+                                    <option value="SF Pro Text"
+                                        style="font-family: 'SF Pro Text', system-ui, -apple-system, sans-serif;">SF Pro
+                                        Text</option>
+                                    <option value="SF Compact Display"
+                                        style="font-family: 'SF Compact Display', system-ui, -apple-system, sans-serif;">
+                                        SF Compact Display</option>
+                                    <option value="SF Compact Text"
+                                        style="font-family: 'SF Compact Text', system-ui, -apple-system, sans-serif;">SF
+                                        Compact Text</option>
+                                    <option value="SF Mono" style="font-family: 'SF Mono', monospace;">SF Mono</option>
+                                    <option value="New York" style="font-family: 'New York', serif;">New York</option>
+                                    <option value="Helvetica Neue" style="font-family: 'Helvetica Neue', sans-serif;">
+                                        Helvetica Neue</option>
+                                    <option value="Helvetica" style="font-family: 'Helvetica', sans-serif;">Helvetica
+                                    </option>
+                                    <option value="Arial" style="font-family: 'Arial', sans-serif;">Arial</option>
+                                    <option value="Avenir Next" style="font-family: 'Avenir Next', sans-serif;">Avenir
+                                        Next</option>
+                                    <option value="Avenir" style="font-family: 'Avenir', sans-serif;">Avenir</option>
+                                    <option value="Menlo" style="font-family: 'Menlo', monospace;">Menlo</option>
+                                    <option value="Monaco" style="font-family: 'Monaco', monospace;">Monaco</option>
+                                    <option value="Courier New" style="font-family: 'Courier New', monospace;">Courier
+                                        New</option>
+                                    <option value="Times New Roman" style="font-family: 'Times New Roman', serif;">Times
+                                        New Roman</option>
+                                    <option value="Times" style="font-family: 'Times', serif;">Times</option>
+                                    <option value="Palatino" style="font-family: 'Palatino', serif;">Palatino</option>
+                                    <option value="Georgia" style="font-family: 'Georgia', serif;">Georgia</option>
+                                    <option value="Trebuchet MS" style="font-family: 'Trebuchet MS', sans-serif;">
+                                        Trebuchet MS</option>
+                                    <option value="Verdana" style="font-family: 'Verdana', sans-serif;">Verdana</option>
+                                    <option value="Futura" style="font-family: 'Futura', sans-serif;">Futura</option>
+                                    <option value="Optima" style="font-family: 'Optima', sans-serif;">Optima</option>
+                                    <option value="Gill Sans" style="font-family: 'Gill Sans', sans-serif;">Gill Sans
+                                    </option>
+                                    <option value="Lucida Grande" style="font-family: 'Lucida Grande', sans-serif;">
+                                        Lucida Grande</option>
+                                    <option value="Chalkboard SE" style="font-family: 'Chalkboard SE', fantasy;">
+                                        Chalkboard SE</option>
+                                    <option value="Marker Felt" style="font-family: 'Marker Felt', fantasy;">Marker Felt
+                                    </option>
+                                    <option value="Noteworthy" style="font-family: 'Noteworthy', fantasy;">Noteworthy
+                                    </option>
+                                    <option value="Papyrus" style="font-family: 'Papyrus', fantasy;">Papyrus</option>
+                                    <option value="Brush Script MT" style="font-family: 'Brush Script MT', cursive;">
+                                        Brush Script MT</option>
+                                    <option value="Zapfino" style="font-family: 'Zapfino', cursive;">Zapfino</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Preview</label>
+                                <div id="color-preview"
+                                    style="padding: 20px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold; transition: all 0.3s ease;">
+                                    Sample Text / QR Code Area
+                                </div>
+                            </div>
+                            <div
+                                style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                                <strong>⚠️ Color Matching Disclaimer:</strong>
+                                <p style="margin: 5px 0 0 0; font-size: 14px; color: #856404;">
+                                    Color matching will be performed to the best of our ability. Custom or currently
+                                    unavailable color schemes may result in longer ordering and shipping times.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="generate-section">
-                <button class="generate-button" onclick="generateVCard()">Generate vCard</button>
-                <div id="vcard-output" class="vcard-output" style="display: none;"></div>
+
+                <div class="generate-section">
+                    <button class="generate-button" onclick="generateVCard()">Generate vCard</button>
+                    <div id="vcard-output" class="vcard-output" style="display: none;"></div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        // Global variables
-        let recordCounters = {
-            name: 0,
-            phone: 0,
-            email: 0,
-            address: 0,
-            url: 0,
-            org: 0,
-            title: 0,
-            note: 0,
-            custom: 0,
-            nickname: 0,
-            role: 0,
-            category: 0,
-            photo: 0,
-            logo: 0,
-            sound: 0,
-            bday: 0,
-            anniversary: 0,
-            gender: 0,
-            impp: 0,
-            geo: 0,
-            tz: 0,
-            key: 0
-        };
+        <script>
+            // Global variables
+            let recordCounters = {
+                name: 0,
+                phone: 0,
+                email: 0,
+                address: 0,
+                url: 0,
+                org: 0,
+                title: 0,
+                note: 0,
+                custom: 0,
+                nickname: 0,
+                role: 0,
+                category: 0,
+                photo: 0,
+                logo: 0,
+                sound: 0,
+                bday: 0,
+                anniversary: 0,
+                gender: 0,
+                impp: 0,
+                geo: 0,
+                tz: 0,
+                key: 0
+            };
 
-        // Validation functions
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-
-        function validatePhone(phone) {
-            const re = /^[\+]?[1-9][\d]{0,15}$/;
-            return re.test(phone.replace(/[\s\-\(\)]/g, ''));
-        }
-
-        function validateUrl(url) {
-            try {
-                new URL(url);
-                return true;
-            } catch {
-                return false;
+            // Validation functions
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
             }
-        }
 
-        function showError(element, message) {
-            element.classList.add('invalid');
-            element.classList.remove('valid');
-            let errorDiv = element.nextElementSibling;
-            if (!errorDiv || !errorDiv.classList.contains('error')) {
-                errorDiv = document.createElement('div');
-                errorDiv.className = 'error';
-                element.parentNode.insertBefore(errorDiv, element.nextSibling);
+            function validatePhone(phone) {
+                const re = /^[\+]?[1-9][\d]{0,15}$/;
+                return re.test(phone.replace(/[\s\-\(\)]/g, ''));
             }
-            errorDiv.textContent = message;
-        }
 
-        function showValid(element) {
-            element.classList.add('valid');
-            element.classList.remove('invalid');
-            let errorDiv = element.nextElementSibling;
-            if (errorDiv && errorDiv.classList.contains('error')) {
-                errorDiv.remove();
+            function validateUrl(url) {
+                try {
+                    new URL(url);
+                    return true;
+                } catch {
+                    return false;
+                }
             }
-        }
 
-        // Address lookup function (mock implementation)
-        function lookupAddress(query, callback) {
-            // In a real implementation, you'd use a geocoding service like Google Maps API
-            // This is a mock implementation
-            setTimeout(() => {
-                const mockResults = [
-                    {
-                        formatted: query + ", United States",
-                        street: query.split(' ')[0] + " Street",
-                        city: "Sample City",
-                        state: "CA",
-                        zip: "90210",
-                        country: "United States"
-                    }
-                ];
-                callback(mockResults);
-            }, 500);
-        }
+            function showError(element, message) {
+                element.classList.add('invalid');
+                element.classList.remove('valid');
+                let errorDiv = element.nextElementSibling;
+                if (!errorDiv || !errorDiv.classList.contains('error')) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.className = 'error';
+                    element.parentNode.insertBefore(errorDiv, element.nextSibling);
+                }
+                errorDiv.textContent = message;
+            }
 
-        // Record creation functions
-        function addNameRecord() {
-            const id = ++recordCounters.name;
-            const html = `
+            function showValid(element) {
+                element.classList.add('valid');
+                element.classList.remove('invalid');
+                let errorDiv = element.nextElementSibling;
+                if (errorDiv && errorDiv.classList.contains('error')) {
+                    errorDiv.remove();
+                }
+            }
+
+            // Address lookup function (mock implementation)
+            function lookupAddress(query, callback) {
+                // In a real implementation, you'd use a geocoding service like Google Maps API
+                // This is a mock implementation
+                setTimeout(() => {
+                    const mockResults = [
+                        {
+                            formatted: query + ", United States",
+                            street: query.split(' ')[0] + " Street",
+                            city: "Sample City",
+                            state: "CA",
+                            zip: "90210",
+                            country: "United States"
+                        }
+                    ];
+                    callback(mockResults);
+                }, 500);
+            }
+
+            // Record creation functions
+            function addNameRecord() {
+                const id = ++recordCounters.name;
+                const html = `
                 <div class="record" id="name-record-${id}">
                     <div class="record-header">
                         <strong>Name ${id}</strong>
@@ -673,12 +655,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('name-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('name-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addPhoneRecord() {
-            const id = ++recordCounters.phone;
-            const html = `
+            function addPhoneRecord() {
+                const id = ++recordCounters.phone;
+                const html = `
                 <div class="record" id="phone-record-${id}">
                     <div class="record-header">
                         <strong>Phone ${id}</strong>
@@ -702,12 +684,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('phone-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('phone-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addEmailRecord() {
-            const id = ++recordCounters.email;
-            const html = `
+            function addEmailRecord() {
+                const id = ++recordCounters.email;
+                const html = `
                 <div class="record" id="email-record-${id}">
                     <div class="record-header">
                         <strong>Email ${id}</strong>
@@ -730,12 +712,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('email-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('email-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addAddressRecord() {
-            const id = ++recordCounters.address;
-            const html = `
+            function addAddressRecord() {
+                const id = ++recordCounters.address;
+                const html = `
                 <div class="record" id="address-record-${id}">
                     <div class="record-header">
                         <strong>Address ${id}</strong>
@@ -783,12 +765,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('address-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('address-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addUrlRecord() {
-            const id = ++recordCounters.url;
-            const html = `
+            function addUrlRecord() {
+                const id = ++recordCounters.url;
+                const html = `
                 <div class="record" id="url-record-${id}">
                     <div class="record-header">
                         <strong>Website ${id}</strong>
@@ -811,12 +793,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('url-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('url-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addOrgRecord() {
-            const id = ++recordCounters.org;
-            const html = `
+            function addOrgRecord() {
+                const id = ++recordCounters.org;
+                const html = `
                 <div class="record" id="org-record-${id}">
                     <div class="record-header">
                         <strong>Organization ${id}</strong>
@@ -834,12 +816,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('org-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('org-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addTitleRecord() {
-            const id = ++recordCounters.title;
-            const html = `
+            function addTitleRecord() {
+                const id = ++recordCounters.title;
+                const html = `
                 <div class="record" id="title-record-${id}">
                     <div class="record-header">
                         <strong>Title ${id}</strong>
@@ -851,12 +833,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('title-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('title-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addNoteRecord() {
-            const id = ++recordCounters.note;
-            const html = `
+            function addNoteRecord() {
+                const id = ++recordCounters.note;
+                const html = `
                 <div class="record" id="note-record-${id}">
                     <div class="record-header">
                         <strong>Note ${id}</strong>
@@ -868,12 +850,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('note-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('note-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addNicknameRecord() {
-            const id = ++recordCounters.nickname;
-            const html = `
+            function addNicknameRecord() {
+                const id = ++recordCounters.nickname;
+                const html = `
                 <div class="record" id="nickname-record-${id}">
                     <div class="record-header">
                         <strong>Nickname ${id}</strong>
@@ -885,12 +867,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('nickname-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('nickname-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addRoleRecord() {
-            const id = ++recordCounters.role;
-            const html = `
+            function addRoleRecord() {
+                const id = ++recordCounters.role;
+                const html = `
                 <div class="record" id="role-record-${id}">
                     <div class="record-header">
                         <strong>Role ${id}</strong>
@@ -902,12 +884,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('role-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('role-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addCategoryRecord() {
-            const id = ++recordCounters.category;
-            const html = `
+            function addCategoryRecord() {
+                const id = ++recordCounters.category;
+                const html = `
                 <div class="record" id="category-record-${id}">
                     <div class="record-header">
                         <strong>Category ${id}</strong>
@@ -919,12 +901,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('category-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('category-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addPhotoRecord() {
-            const id = ++recordCounters.photo;
-            const html = `
+            function addPhotoRecord() {
+                const id = ++recordCounters.photo;
+                const html = `
                 <div class="record" id="photo-record-${id}">
                     <div class="record-header">
                         <strong>Photo ${id}</strong>
@@ -953,12 +935,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('photo-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('photo-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addLogoRecord() {
-            const id = ++recordCounters.logo;
-            const html = `
+            function addLogoRecord() {
+                const id = ++recordCounters.logo;
+                const html = `
                 <div class="record" id="logo-record-${id}">
                     <div class="record-header">
                         <strong>Logo ${id}</strong>
@@ -970,12 +952,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('logo-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('logo-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addSoundRecord() {
-            const id = ++recordCounters.sound;
-            const html = `
+            function addSoundRecord() {
+                const id = ++recordCounters.sound;
+                const html = `
                 <div class="record" id="sound-record-${id}">
                     <div class="record-header">
                         <strong>Sound ${id}</strong>
@@ -987,12 +969,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('sound-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('sound-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addBdayRecord() {
-            const id = ++recordCounters.bday;
-            const html = `
+            function addBdayRecord() {
+                const id = ++recordCounters.bday;
+                const html = `
                 <div class="record" id="bday-record-${id}">
                     <div class="record-header">
                         <strong>Birthday ${id}</strong>
@@ -1004,12 +986,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('bday-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('bday-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addAnniversaryRecord() {
-            const id = ++recordCounters.anniversary;
-            const html = `
+            function addAnniversaryRecord() {
+                const id = ++recordCounters.anniversary;
+                const html = `
                 <div class="record" id="anniversary-record-${id}">
                     <div class="record-header">
                         <strong>Anniversary ${id}</strong>
@@ -1021,12 +1003,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('anniversary-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('anniversary-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addGenderRecord() {
-            const id = ++recordCounters.gender;
-            const html = `
+            function addGenderRecord() {
+                const id = ++recordCounters.gender;
+                const html = `
                 <div class="record" id="gender-record-${id}">
                     <div class="record-header">
                         <strong>Gender ${id}</strong>
@@ -1044,12 +1026,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('gender-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('gender-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addImppRecord() {
-            const id = ++recordCounters.impp;
-            const html = `
+            function addImppRecord() {
+                const id = ++recordCounters.impp;
+                const html = `
                 <div class="record" id="impp-record-${id}">
                     <div class="record-header">
                         <strong>IM Contact ${id}</strong>
@@ -1075,12 +1057,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('impp-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('impp-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addGeoRecord() {
-            const id = ++recordCounters.geo;
-            const html = `
+            function addGeoRecord() {
+                const id = ++recordCounters.geo;
+                const html = `
                 <div class="record" id="geo-record-${id}">
                     <div class="record-header">
                         <strong>Location ${id}</strong>
@@ -1098,12 +1080,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('geo-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('geo-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addTzRecord() {
-            const id = ++recordCounters.tz;
-            const html = `
+            function addTzRecord() {
+                const id = ++recordCounters.tz;
+                const html = `
                 <div class="record" id="tz-record-${id}">
                     <div class="record-header">
                         <strong>Time Zone ${id}</strong>
@@ -1115,12 +1097,12 @@
                     </div>
                 </div>
             `;
-            document.getElementById('tz-section').insertAdjacentHTML('beforeend', html);
-        }
+                document.getElementById('tz-section').insertAdjacentHTML('beforeend', html);
+            }
 
-        function addKeyRecord() {
-            const id = ++recordCounters.key;
-            const html = `
+            function addKeyRecord() {
+                const id = ++recordCounters.key;
+                const html = `
                 <div class="record" id="key-record-${id}">
                     <div class="record-header">
                         <strong>Encryption Key ${id}</strong>
@@ -1149,370 +1131,484 @@
                     </div>
                 </div>
             `;
-            document.getElementById('key-section').insertAdjacentHTML('beforeend', html);
-        }
-
-        // Color validation and preview functions
-        function validateFaceColor() {
-            const backingColor = document.getElementById('backing-color').value;
-            const faceColor = document.getElementById('face-color').value;
-            const errorDiv = document.getElementById('face-color-error');
-            
-            const backingBrightness = getBrightness(backingColor);
-            const faceBrightness = getBrightness(faceColor);
-            
-            if (faceBrightness <= backingBrightness) {
-                errorDiv.textContent = 'Face color must be brighter than backing color for QR code readability';
-                errorDiv.style.display = 'block';
-                document.getElementById('face-color').classList.add('invalid');
-                return false;
-            } else {
-                errorDiv.style.display = 'none';
-                document.getElementById('face-color').classList.remove('invalid');
-                document.getElementById('face-color').classList.add('valid');
-                updatePreview();
-                return true;
+                document.getElementById('key-section').insertAdjacentHTML('beforeend', html);
             }
-        }
-        
-        function getBrightness(hexColor) {
-            // Convert hex to RGB
-            const r = parseInt(hexColor.substr(1, 2), 16);
-            const g = parseInt(hexColor.substr(3, 2), 16);
-            const b = parseInt(hexColor.substr(5, 2), 16);
-            
-            // Calculate brightness using the standard formula
-            return (r * 299 + g * 587 + b * 114) / 1000;
-        }
-        
-        function updatePreview() {
-            const backingColor = document.getElementById('backing-color').value;
-            const faceColor = document.getElementById('face-color').value;
-            const fontFamily = document.getElementById('font-family').value;
-            const preview = document.getElementById('color-preview');
-            
-            preview.style.backgroundColor = backingColor;
-            preview.style.color = faceColor;
-            preview.style.fontFamily = fontFamily;
-        }
-        
-        // Add event listeners for real-time preview updates
-        document.addEventListener('DOMContentLoaded', function() {
-            const backingColorInput = document.getElementById('backing-color');
-            const faceColorInput = document.getElementById('face-color');
-            const fontSelect = document.getElementById('font-family');
-            
-            backingColorInput.addEventListener('change', function() {
-                validateFaceColor();
-            });
-            
-            faceColorInput.addEventListener('change', validateFaceColor);
-            fontSelect.addEventListener('change', updatePreview);
-            
-            // Initial preview update
-            updatePreview();
-        });
 
-        function removeRecord(recordId) {
-            document.getElementById(recordId).remove();
-        }
+            // Color validation and preview functions
+            function validateFaceColor() {
+                const backingColor = document.getElementById('backing-color').value;
+                const faceColor = document.getElementById('face-color').value;
+                const errorDiv = document.getElementById('face-color-error');
 
-        // Validation handlers
-        function validatePhoneField(element) {
-            const phone = element.value.trim();
-            if (phone && !validatePhone(phone)) {
-                showError(element, 'Invalid phone number format');
-            } else if (phone) {
-                showValid(element);
+                const backingBrightness = getBrightness(backingColor);
+                const faceBrightness = getBrightness(faceColor);
+
+                if (faceBrightness <= backingBrightness) {
+                    errorDiv.textContent = 'Face color must be brighter than backing color for QR code readability';
+                    errorDiv.style.display = 'block';
+                    document.getElementById('face-color').classList.add('invalid');
+                    return false;
+                } else {
+                    errorDiv.style.display = 'none';
+                    document.getElementById('face-color').classList.remove('invalid');
+                    document.getElementById('face-color').classList.add('valid');
+                    updatePreview();
+                    return true;
+                }
             }
-        }
 
-        function validateEmailField(element) {
-            const email = element.value.trim();
-            if (email && !validateEmail(email)) {
-                showError(element, 'Invalid email address format');
-            } else if (email) {
-                showValid(element);
-            }
-        }
+            function getBrightness(hexColor) {
+                // Convert hex to RGB
+                const r = parseInt(hexColor.substr(1, 2), 16);
+                const g = parseInt(hexColor.substr(3, 2), 16);
+                const b = parseInt(hexColor.substr(5, 2), 16);
 
-        function validateUrlField(element) {
-            const url = element.value.trim();
-            if (url && !validateUrl(url)) {
-                showError(element, 'Invalid URL format');
-            } else if (url) {
-                showValid(element);
+                // Calculate brightness using the standard formula
+                return (r * 299 + g * 587 + b * 114) / 1000;
             }
-        }
 
-        // Address lookup handler
-        function handleAddressLookup(element, recordId) {
-            const query = element.value.trim();
-            const resultsDiv = document.getElementById(`lookup-results-${recordId}`);
-            
-            if (query.length < 3) {
-                resultsDiv.style.display = 'none';
-                return;
+            function updatePreview() {
+                const backingColor = document.getElementById('backing-color').value;
+                const faceColor = document.getElementById('face-color').value;
+                const fontFamily = document.getElementById('font-family').value;
+                const preview = document.getElementById('color-preview');
+
+                preview.style.backgroundColor = backingColor;
+                preview.style.color = faceColor;
+                preview.style.fontFamily = fontFamily;
             }
-            
-            lookupAddress(query, (results) => {
-                resultsDiv.innerHTML = '';
-                results.forEach(result => {
-                    const item = document.createElement('div');
-                    item.className = 'lookup-item';
-                    item.textContent = result.formatted;
-                    item.onclick = () => {
-                        document.getElementById(`address-street-${recordId}`).value = result.street;
-                        document.getElementById(`address-city-${recordId}`).value = result.city;
-                        document.getElementById(`address-state-${recordId}`).value = result.state;
-                        document.getElementById(`address-zip-${recordId}`).value = result.zip;
-                        document.getElementById(`address-country-${recordId}`).value = result.country;
-                        resultsDiv.style.display = 'none';
-                    };
-                    resultsDiv.appendChild(item);
+
+            // Add event listeners for real-time preview updates
+            document.addEventListener('DOMContentLoaded', function () {
+                const backingColorInput = document.getElementById('backing-color');
+                const faceColorInput = document.getElementById('face-color');
+                const fontSelect = document.getElementById('font-family');
+
+                backingColorInput.addEventListener('change', function () {
+                    validateFaceColor();
                 });
-                resultsDiv.style.display = 'block';
-            });
-        }
 
-        // vCard generation
-        function generateVCard() {
-            let vcard = 'BEGIN:VCARD\nVERSION:3.0\n';
-            
-            // Names
-            for (let i = 1; i <= recordCounters.name; i++) {
-                const record = document.getElementById(`name-record-${i}`);
-                if (record) {
-                    const first = document.getElementById(`name-first-${i}`).value;
-                    const last = document.getElementById(`name-last-${i}`).value;
-                    const middle = document.getElementById(`name-middle-${i}`).value;
-                    const prefix = document.getElementById(`name-prefix-${i}`).value;
-                    const suffix = document.getElementById(`name-suffix-${i}`).value;
-                    
+                faceColorInput.addEventListener('change', validateFaceColor);
+                fontSelect.addEventListener('change', updatePreview);
+
+                // Initial preview update
+                updatePreview();
+            });
+
+            function removeRecord(recordId) {
+                document.getElementById(recordId).remove();
+            }
+
+            // Validation handlers
+            function validatePhoneField(element) {
+                const phone = element.value.trim();
+                if (phone && !validatePhone(phone)) {
+                    showError(element, 'Invalid phone number format');
+                } else if (phone) {
+                    showValid(element);
+                }
+            }
+
+            function validateEmailField(element) {
+                const email = element.value.trim();
+                if (email && !validateEmail(email)) {
+                    showError(element, 'Invalid email address format');
+                } else if (email) {
+                    showValid(element);
+                }
+            }
+
+            function validateUrlField(element) {
+                const url = element.value.trim();
+                if (url && !validateUrl(url)) {
+                    showError(element, 'Invalid URL format');
+                } else if (url) {
+                    showValid(element);
+                }
+            }
+
+            // Address lookup handler
+            function handleAddressLookup(element, recordId) {
+                const query = element.value.trim();
+                const resultsDiv = document.getElementById(`lookup-results-${recordId}`);
+
+                if (query.length < 3) {
+                    resultsDiv.style.display = 'none';
+                    return;
+                }
+
+                lookupAddress(query, (results) => {
+                    resultsDiv.innerHTML = '';
+                    results.forEach(result => {
+                        const item = document.createElement('div');
+                        item.className = 'lookup-item';
+                        item.textContent = result.formatted;
+                        item.onclick = () => {
+                            document.getElementById(`address-street-${recordId}`).value = result.street;
+                            document.getElementById(`address-city-${recordId}`).value = result.city;
+                            document.getElementById(`address-state-${recordId}`).value = result.state;
+                            document.getElementById(`address-zip-${recordId}`).value = result.zip;
+                            document.getElementById(`address-country-${recordId}`).value = result.country;
+                            resultsDiv.style.display = 'none';
+                        };
+                        resultsDiv.appendChild(item);
+                    });
+                    resultsDiv.style.display = 'block';
+                });
+            }
+
+            // vCard generation
+            // -- vCard generator ----------------------------------------------------------
+            function generateVCard() {
+                // ---------------------------------------------------------------------------
+                // 1. Header
+                // ---------------------------------------------------------------------------
+                let vcard = [
+                    'BEGIN:VCARD',
+                    'VERSION:3.0',
+                    'PRODID:-//Comtap//Comtap Customizer 1.0//EN',
+                    `REV:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`
+                ].join('\n') + '\n';
+
+                // ---------------------------------------------------------------------------
+                // 2. Personal names
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.name; i++) {
+                    const rec = document.getElementById(`name-record-${i}`);
+                    if (!rec) continue;
+
+                    const first = document.getElementById(`name-first-${i}`).value.trim();
+                    const last = document.getElementById(`name-last-${i}`).value.trim();
+                    const middle = document.getElementById(`name-middle-${i}`).value.trim();
+                    const prefix = document.getElementById(`name-prefix-${i}`).value.trim();
+                    const suffix = document.getElementById(`name-suffix-${i}`).value.trim();
+
                     if (first || last) {
                         vcard += `N:${last};${first};${middle};${prefix};${suffix}\n`;
-                        vcard += `FN:${prefix} ${first} ${middle} ${last} ${suffix}`.replace(/\s+/g, ' ').trim() + '\n';
+                        vcard += `FN:${[prefix, first, middle, last, suffix].filter(Boolean).join(' ')}\n`;
                     }
                 }
-            }
-            
-            // Phones
-            for (let i = 1; i <= recordCounters.phone; i++) {
-                const record = document.getElementById(`phone-record-${i}`);
-                if (record) {
-                    const number = document.getElementById(`phone-number-${i}`).value;
+
+                // ---------------------------------------------------------------------------
+                // 3. Nicknames
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.nickname; i++) {
+                    const rec = document.getElementById(`nickname-record-${i}`);
+                    if (!rec) continue;
+                    const val = document.getElementById(`nickname-value-${i}`).value.trim();
+                    if (val) vcard += `NICKNAME:${val}\n`;
+                }
+
+                // ---------------------------------------------------------------------------
+                // 4. Titles
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.title; i++) {
+                    const rec = document.getElementById(`title-record-${i}`);
+                    if (!rec) continue;
+                    const title = document.getElementById(`title-value-${i}`).value.trim();
+                    if (title) vcard += `TITLE:${title}\n`;
+                }
+
+                // ---------------------------------------------------------------------------
+                // 5. Roles
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.role; i++) {
+                    const rec = document.getElementById(`role-record-${i}`);
+                    if (!rec) continue;
+                    const role = document.getElementById(`role-value-${i}`).value.trim();
+                    if (role) vcard += `ROLE:${role}\n`;
+                }
+
+                // ---------------------------------------------------------------------------
+                // 6. Organisations
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.org; i++) {
+                    const rec = document.getElementById(`org-record-${i}`);
+                    if (!rec) continue;
+                    const name = document.getElementById(`org-name-${i}`).value.trim();
+                    const dept = document.getElementById(`org-department-${i}`).value.trim();
+                    if (name) vcard += `ORG:${name}${dept ? ';' + dept : ''}\n`;
+                }
+
+                // ---------------------------------------------------------------------------
+                // 7. Categories
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.category; i++) {
+                    const rec = document.getElementById(`category-record-${i}`);
+                    if (!rec) continue;
+                    const cats = document.getElementById(`category-value-${i}`).value
+                        .split(',')
+                        .map(c => c.trim())
+                        .filter(Boolean)
+                        .join(',');
+                    if (cats) vcard += `CATEGORIES:${cats}\n`;
+                }
+
+                // ---------------------------------------------------------------------------
+                // 8. Phones
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.phone; i++) {
+                    const rec = document.getElementById(`phone-record-${i}`);
+                    if (!rec) continue;
+                    const num = document.getElementById(`phone-number-${i}`).value.trim();
                     const type = document.getElementById(`phone-type-${i}`).value;
-                    if (number) {
-                        vcard += `TEL;TYPE=${type}:${number}\n`;
-                    }
+                    if (num) vcard += `TEL;TYPE=${type}:${num}\n`;
                 }
-            }
-            
-            // Emails
-            for (let i = 1; i <= recordCounters.email; i++) {
-                const record = document.getElementById(`email-record-${i}`);
-                if (record) {
-                    const email = document.getElementById(`email-address-${i}`).value;
+
+                // ---------------------------------------------------------------------------
+                // 9. Emails
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.email; i++) {
+                    const rec = document.getElementById(`email-record-${i}`);
+                    if (!rec) continue;
+                    const email = document.getElementById(`email-address-${i}`).value.trim();
                     const type = document.getElementById(`email-type-${i}`).value;
-                    if (email) {
-                        vcard += `EMAIL;TYPE=${type}:${email}\n`;
-                    }
+                    if (email) vcard += `EMAIL;TYPE=${type}:${email}\n`;
                 }
-            }
-            
-            // Addresses
-            for (let i = 1; i <= recordCounters.address; i++) {
-                const record = document.getElementById(`address-record-${i}`);
-                if (record) {
-                    const street = document.getElementById(`address-street-${i}`).value;
-                    const city = document.getElementById(`address-city-${i}`).value;
-                    const state = document.getElementById(`address-state-${i}`).value;
-                    const zip = document.getElementById(`address-zip-${i}`).value;
-                    const country = document.getElementById(`address-country-${i}`).value;
+
+                // ---------------------------------------------------------------------------
+                // 10. Addresses
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.address; i++) {
+                    const rec = document.getElementById(`address-record-${i}`);
+                    if (!rec) continue;
+
+                    const street = document.getElementById(`address-street-${i}`).value.trim();
+                    const city = document.getElementById(`address-city-${i}`).value.trim();
+                    const state = document.getElementById(`address-state-${i}`).value.trim();
+                    const zip = document.getElementById(`address-zip-${i}`).value.trim();
+                    const country = document.getElementById(`address-country-${i}`).value.trim();
                     const type = document.getElementById(`address-type-${i}`).value;
-                    
+
                     if (street || city || state || zip || country) {
                         vcard += `ADR;TYPE=${type}:;;${street};${city};${state};${zip};${country}\n`;
                     }
                 }
-            }
-            
-            // URLs
-            for (let i = 1; i <= recordCounters.url; i++) {
-                const record = document.getElementById(`url-record-${i}`);
-                if (record) {
-                    const url = document.getElementById(`url-address-${i}`).value;
+
+                // ---------------------------------------------------------------------------
+                // 11. URLs
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.url; i++) {
+                    const rec = document.getElementById(`url-record-${i}`);
+                    if (!rec) continue;
+                    const url = document.getElementById(`url-address-${i}`).value.trim();
                     const type = document.getElementById(`url-type-${i}`).value;
-                    if (url) {
-                        vcard += `URL;TYPE=${type}:${url}\n`;
-                    }
+                    if (url) vcard += `URL;TYPE=${type}:${url}\n`;
                 }
-            }
-            
-            // Organizations
-            for (let i = 1; i <= recordCounters.org; i++) {
-                const record = document.getElementById(`org-record-${i}`);
-                if (record) {
-                    const name = document.getElementById(`org-name-${i}`).value;
-                    const department = document.getElementById(`org-department-${i}`).value;
-                    if (name) {
-                        vcard += `ORG:${name}`;
-                        if (department) {
-                            vcard += `;${department}`;
-                        }
-                        vcard += '\n';
-                    }
+
+                // ---------------------------------------------------------------------------
+                // 12. Photos / Logos / Sounds  (only URL variant for brevity)
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.photo; i++) {
+                    const rec = document.getElementById(`photo-record-${i}`);
+                    if (!rec) continue;
+                    const fmt = document.getElementById(`photo-format-${i}`).value;
+                    const data = document.getElementById(`photo-data-${i}`).value.trim();
+                    const kind = document.getElementById(`photo-type-${i}`).value === 'BASE64'
+                        ? `ENCODING=b;TYPE=${fmt}`
+                        : `VALUE=URI;TYPE=${fmt}`;
+                    if (data) vcard += `PHOTO;${kind}:${data}\n`;
                 }
-            }
-            
-            // Titles
-            for (let i = 1; i <= recordCounters.title; i++) {
-                const record = document.getElementById(`title-record-${i}`);
-                if (record) {
-                    const title = document.getElementById(`title-value-${i}`).value;
-                    if (title) {
-                        vcard += `TITLE:${title}\n`;
-                    }
+
+                for (let i = 1; i <= recordCounters.logo; i++) {
+                    const rec = document.getElementById(`logo-record-${i}`);
+                    if (!rec) continue;
+                    const url = document.getElementById(`logo-url-${i}`).value.trim();
+                    if (url) vcard += `LOGO;VALUE=URI:${url}\n`;
                 }
-            }
-            
-            // Notes
-            for (let i = 1; i <= recordCounters.note; i++) {
-                const record = document.getElementById(`note-record-${i}`);
-                if (record) {
-                    const note = document.getElementById(`note-value-${i}`).value;
-                    if (note) {
-                        vcard += `NOTE:${note}\n`;
-                    }
+
+                for (let i = 1; i <= recordCounters.sound; i++) {
+                    const rec = document.getElementById(`sound-record-${i}`);
+                    if (!rec) continue;
+                    const url = document.getElementById(`sound-url-${i}`).value.trim();
+                    if (url) vcard += `SOUND;VALUE=URI:${url}\n`;
                 }
-            }
-            
-            // Custom fields (product customizations)
-            const customizations = {
-                backingColor: document.getElementById('backing-color').value,
-                faceColor: document.getElementById('face-color').value,
-                fontFamily: document.getElementById('font-family').value
-            };
-            
-            // Add customizations to vCard as custom fields
-            vcard += `X-BACKING-COLOR:${customizations.backingColor}\n`;
-            vcard += `X-FACE-COLOR:${customizations.faceColor}\n`;
-            vcard += `X-FONT-FAMILY:${customizations.fontFamily}\n`;
-            
-            vcard += 'END:VCARD';
-            
-            // Display the vCard
-            const outputDiv = document.getElementById('vcard-output');
-            outputDiv.textContent = vcard;
-            outputDiv.style.display = 'block';
-            
-            // Create a data structure for easy access
-            const vcardData = {
-                vcard: vcard,
-                customizations: customizations,
-                timestamp: new Date().toISOString()
-            };
-            
-            // Store in a global variable for retrieval
-            window.vcardData = vcardData;
-            
-            // Trigger custom event for integration
-            window.dispatchEvent(new CustomEvent('vcardGenerated', { 
-                detail: vcardData 
-            }));
-            
-            // Scroll to output
-            outputDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        // Utility function to get the vCard data
-        function getVCardData() {
-            return window.vcardData;
-        }
-        
-        // Utility function to download vCard
-        function downloadVCard() {
-            if (!window.vcardData) {
-                alert('Please generate a vCard first');
-                return;
-            }
-            
-            const blob = new Blob([window.vcardData.vcard], { type: 'text/vcard' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'contact.vcf';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-        
-        // Add download button functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const generateSection = document.querySelector('.generate-section');
-            const downloadBtn = document.createElement('button');
-            downloadBtn.className = 'generate-button';
-            downloadBtn.textContent = 'Download vCard';
-            downloadBtn.onclick = downloadVCard;
-            downloadBtn.style.marginLeft = '10px';
-            generateSection.querySelector('.generate-button').insertAdjacentElement('afterend', downloadBtn);
-        });
-        
-        // Hide lookup results when clicking outside
-        document.addEventListener('click', function(event) {
-            const lookupResults = document.querySelectorAll('.lookup-results');
-            lookupResults.forEach(result => {
-                if (!result.contains(event.target) && !event.target.id.includes('address-lookup')) {
-                    result.style.display = 'none';
+
+                // ---------------------------------------------------------------------------
+                // 13. Birthdays & anniversaries
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.bday; i++) {
+                    const rec = document.getElementById(`bday-record-${i}`);
+                    if (!rec) continue;
+                    const date = document.getElementById(`bday-date-${i}`).value;
+                    if (date) vcard += `BDAY:${date}\n`;
                 }
+
+                for (let i = 1; i <= recordCounters.anniversary; i++) {
+                    const rec = document.getElementById(`anniversary-record-${i}`);
+                    if (!rec) continue;
+                    const date = document.getElementById(`anniversary-date-${i}`).value;
+                    if (date) vcard += `ANNIVERSARY:${date}\n`;
+                }
+
+                // ---------------------------------------------------------------------------
+                // 14. Gender
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.gender; i++) {
+                    const rec = document.getElementById(`gender-record-${i}`);
+                    if (!rec) continue;
+                    const g = document.getElementById(`gender-value-${i}`).value;
+                    if (g) vcard += `GENDER:${g}\n`;
+                }
+
+                // ---------------------------------------------------------------------------
+                // 15. IMPP (instant-messaging URIs)
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.impp; i++) {
+                    const rec = document.getElementById(`impp-record-${i}`);
+                    if (!rec) continue;
+                    const svc = document.getElementById(`impp-service-${i}`).value.toLowerCase();
+                    const id = document.getElementById(`impp-handle-${i}`).value.trim();
+                    if (id) vcard += `IMPP:${svc}:${id}\n`;
+                }
+
+                // ---------------------------------------------------------------------------
+                // 16. GEO and TZ
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.geo; i++) {
+                    const rec = document.getElementById(`geo-record-${i}`);
+                    if (!rec) continue;
+                    const lat = document.getElementById(`geo-lat-${i}`).value.trim();
+                    const lon = document.getElementById(`geo-lon-${i}`).value.trim();
+                    if (lat && lon) vcard += `GEO:${lat};${lon}\n`;
+                }
+
+                for (let i = 1; i <= recordCounters.tz; i++) {
+                    const rec = document.getElementById(`tz-record-${i}`);
+                    if (!rec) continue;
+                    const tz = document.getElementById(`tz-value-${i}`).value.trim();
+                    if (tz) vcard += `TZ:${tz}\n`;
+                }
+
+                // ---------------------------------------------------------------------------
+                // 17. Encryption keys
+                // ---------------------------------------------------------------------------
+                for (let i = 1; i <= recordCounters.key; i++) {
+                    const rec = document.getElementById(`key-record-${i}`);
+                    if (!rec) continue;
+                    const type = document.getElementById(`key-type-${i}`).value;
+                    const enc = document.getElementById(`key-encoding-${i}`).value;
+                    const data = document.getElementById(`key-data-${i}`).value.trim();
+                    if (data) vcard += `KEY;TYPE=${type};ENCODING=${enc}:${data}\n`;
+                }
+
+                // ---------------------------------------------------------------------------
+                // 18. Custom product-option fields (always exactly once)
+                // ---------------------------------------------------------------------------
+                const backColor = document.getElementById('backing-color').value;
+                const faceColor = document.getElementById('face-color').value;
+                const font = document.getElementById('font-family').value;
+                vcard += `X-BACKING-COLOR:${backColor}\n`;
+                vcard += `X-FACE-COLOR:${faceColor}\n`;
+                vcard += `X-FONT-FAMILY:${font}\n`;
+
+                // ---------------------------------------------------------------------------
+                // 19. Footer & display
+                // ---------------------------------------------------------------------------
+                vcard += 'END:VCARD';
+
+                const out = document.getElementById('vcard-output');
+                out.textContent = vcard;
+                out.style.display = 'block';
+
+                // Save globally for download / other integrations
+                window.vcardData = { vcard, timestamp: new Date().toISOString() };
+                window.dispatchEvent(new CustomEvent('vcardGenerated', { detail: window.vcardData }));
+
+                // Smooth scroll
+                out.scrollIntoView({ behavior: 'smooth' });
+            }
+            // -----------------------------------------------------------------------------
+
+            // Utility function to get the vCard data
+            function getVCardData() {
+                return window.vcardData;
+            }
+
+            // Utility function to download vCard
+            function downloadVCard() {
+                if (!window.vcardData) {
+                    alert('Please generate a vCard first');
+                    return;
+                }
+
+                const blob = new Blob([window.vcardData.vcard], { type: 'text/vcard' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'contact.vcf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            // Add download button functionality
+            document.addEventListener('DOMContentLoaded', function () {
+                const generateSection = document.querySelector('.generate-section');
+                const downloadBtn = document.createElement('button');
+                downloadBtn.className = 'generate-button';
+                downloadBtn.textContent = 'Download vCard';
+                downloadBtn.onclick = downloadVCard;
+                downloadBtn.style.marginLeft = '10px';
+                generateSection.querySelector('.generate-button').insertAdjacentElement('afterend', downloadBtn);
             });
-        });
-        
-        // Auto-save functionality (optional)
-        function autoSave() {
-            const formData = {};
-            
-            // Save all form fields
-            document.querySelectorAll('input, select, textarea').forEach(field => {
-                if (field.id) {
-                    formData[field.id] = field.value;
-                }
-            });
-            
-            // Note: In a real Square site, you'd save this to your backend
-            console.log('Auto-saved form data:', formData);
-        }
-        
-        // Auto-save every 30 seconds
-        setInterval(autoSave, 30000);
-        
-        // Initialize with at least one name field and setup customization listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            addNameRecord();
-            
-            // Setup customization event listeners
-            const backingColorInput = document.getElementById('backing-color');
-            const faceColorInput = document.getElementById('face-color');
-            const fontSelect = document.getElementById('font-family');
-            
-            if (backingColorInput) {
-                backingColorInput.addEventListener('change', function() {
-                    validateFaceColor();
+
+            // Hide lookup results when clicking outside
+            document.addEventListener('click', function (event) {
+                const lookupResults = document.querySelectorAll('.lookup-results');
+                lookupResults.forEach(result => {
+                    if (!result.contains(event.target) && !event.target.id.includes('address-lookup')) {
+                        result.style.display = 'none';
+                    }
                 });
+            });
+
+            // Auto-save functionality (optional)
+            function autoSave() {
+                const formData = {};
+
+                // Save all form fields
+                document.querySelectorAll('input, select, textarea').forEach(field => {
+                    if (field.id) {
+                        formData[field.id] = field.value;
+                    }
+                });
+
+                // Note: In a real Square site, you'd save this to your backend
+                console.log('Auto-saved form data:', formData);
             }
-            
-            if (faceColorInput) {
-                faceColorInput.addEventListener('change', validateFaceColor);
-            }
-            
-            if (fontSelect) {
-                fontSelect.addEventListener('change', updatePreview);
-            }
-            
-            // Initial preview update
-            setTimeout(updatePreview, 100);
-        });
-    </script>
-</body>
-</html>
+
+            // Auto-save every 30 seconds
+            setInterval(autoSave, 30000);
+
+            // Initialize with at least one name field and setup customization listeners
+            document.addEventListener('DOMContentLoaded', function () {
+                addNameRecord();
+
+                // Setup customization event listeners
+                const backingColorInput = document.getElementById('backing-color');
+                const faceColorInput = document.getElementById('face-color');
+                const fontSelect = document.getElementById('font-family');
+
+                if (backingColorInput) {
+                    backingColorInput.addEventListener('change', function () {
+                        validateFaceColor();
+                    });
+                }
+
+                if (faceColorInput) {
+                    faceColorInput.addEventListener('change', validateFaceColor);
+                }
+
+                if (fontSelect) {
+                    fontSelect.addEventListener('change', updatePreview);
+                }
+
+                // Initial preview update
+                setTimeout(updatePreview, 100);
+            });
+        </script>
+    </body>
+
+    </html>
