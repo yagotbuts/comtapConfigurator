@@ -498,6 +498,7 @@
 
                 <div class="generate-section">
                     <button class="generate-button" onclick="generateVCard()">Generate vCard</button>
+                    <button class="generate-button" onclick="sendVCard()" style="margin-left:10px;">Send vCard</button>
                     <div id="vcard-output" class="vcard-output" style="display: none;"></div>
                 </div>
             </div>
@@ -1233,29 +1234,27 @@
                 // ---------------------------------------------------------------------------
                 // 1. Header
                 // ---------------------------------------------------------------------------
-                let vcard = [
+                const vcardLines = [
                     'BEGIN:VCARD',
                     'VERSION:3.0',
                     'PRODID:-//Comtap//Comtap Customizer 1.0//EN',
                     `REV:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`
-                ].join('\n') + '\n';
+                ];
 
                 // ---------------------------------------------------------------------------
                 // 2. Personal names
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.name; i++) {
-                    const rec = document.getElementById(`name-record-${i}`);
-                    if (!rec) continue;
-
-                    const first = document.getElementById(`name-first-${i}`).value.trim();
-                    const last = document.getElementById(`name-last-${i}`).value.trim();
+                    if (!document.getElementById(`name-record-${i}`)) continue;
+                    const first  = document.getElementById(`name-first-${i}`).value.trim();
+                    const last   = document.getElementById(`name-last-${i}`).value.trim();
                     const middle = document.getElementById(`name-middle-${i}`).value.trim();
                     const prefix = document.getElementById(`name-prefix-${i}`).value.trim();
                     const suffix = document.getElementById(`name-suffix-${i}`).value.trim();
 
                     if (first || last) {
-                        vcard += `N:${last};${first};${middle};${prefix};${suffix}\n`;
-                        vcard += `FN:${[prefix, first, middle, last, suffix].filter(Boolean).join(' ')}\n`;
+                        vcardLines.push(`N:${last};${first};${middle};${prefix};${suffix}`);
+                        vcardLines.push(`FN:${[prefix, first, middle, last, suffix].filter(Boolean).join(' ')}`);
                     }
                 }
 
@@ -1263,95 +1262,85 @@
                 // 3. Nicknames
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.nickname; i++) {
-                    const rec = document.getElementById(`nickname-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`nickname-record-${i}`)) continue;
                     const val = document.getElementById(`nickname-value-${i}`).value.trim();
-                    if (val) vcard += `NICKNAME:${val}\n`;
+                    if (val) vcardLines.push(`NICKNAME:${val}`);
                 }
 
                 // ---------------------------------------------------------------------------
                 // 4. Titles
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.title; i++) {
-                    const rec = document.getElementById(`title-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`title-record-${i}`)) continue;
                     const title = document.getElementById(`title-value-${i}`).value.trim();
-                    if (title) vcard += `TITLE:${title}\n`;
+                    if (title) vcardLines.push(`TITLE:${title}`);
                 }
 
                 // ---------------------------------------------------------------------------
                 // 5. Roles
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.role; i++) {
-                    const rec = document.getElementById(`role-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`role-record-${i}`)) continue;
                     const role = document.getElementById(`role-value-${i}`).value.trim();
-                    if (role) vcard += `ROLE:${role}\n`;
+                    if (role) vcardLines.push(`ROLE:${role}`);
                 }
 
                 // ---------------------------------------------------------------------------
                 // 6. Organisations
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.org; i++) {
-                    const rec = document.getElementById(`org-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`org-record-${i}`)) continue;
                     const name = document.getElementById(`org-name-${i}`).value.trim();
                     const dept = document.getElementById(`org-department-${i}`).value.trim();
-                    if (name) vcard += `ORG:${name}${dept ? ';' + dept : ''}\n`;
+                    if (name) vcardLines.push(`ORG:${name}${dept ? ';' + dept : ''}`);
                 }
 
                 // ---------------------------------------------------------------------------
                 // 7. Categories
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.category; i++) {
-                    const rec = document.getElementById(`category-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`category-record-${i}`)) continue;
                     const cats = document.getElementById(`category-value-${i}`).value
                         .split(',')
                         .map(c => c.trim())
                         .filter(Boolean)
                         .join(',');
-                    if (cats) vcard += `CATEGORIES:${cats}\n`;
+                    if (cats) vcardLines.push(`CATEGORIES:${cats}`);
                 }
 
                 // ---------------------------------------------------------------------------
                 // 8. Phones
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.phone; i++) {
-                    const rec = document.getElementById(`phone-record-${i}`);
-                    if (!rec) continue;
-                    const num = document.getElementById(`phone-number-${i}`).value.trim();
+                    if (!document.getElementById(`phone-record-${i}`)) continue;
+                    const num  = document.getElementById(`phone-number-${i}`).value.trim();
                     const type = document.getElementById(`phone-type-${i}`).value;
-                    if (num) vcard += `TEL;TYPE=${type}:${num}\n`;
+                    if (num) vcardLines.push(`TEL;TYPE=${type}:${num}`);
                 }
 
                 // ---------------------------------------------------------------------------
                 // 9. Emails
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.email; i++) {
-                    const rec = document.getElementById(`email-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`email-record-${i}`)) continue;
                     const email = document.getElementById(`email-address-${i}`).value.trim();
-                    const type = document.getElementById(`email-type-${i}`).value;
-                    if (email) vcard += `EMAIL;TYPE=${type}:${email}\n`;
+                    const type  = document.getElementById(`email-type-${i}`).value;
+                    if (email) vcardLines.push(`EMAIL;TYPE=${type}:${email}`);
                 }
 
                 // ---------------------------------------------------------------------------
                 // 10. Addresses
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.address; i++) {
-                    const rec = document.getElementById(`address-record-${i}`);
-                    if (!rec) continue;
-
-                    const street = document.getElementById(`address-street-${i}`).value.trim();
-                    const city = document.getElementById(`address-city-${i}`).value.trim();
-                    const state = document.getElementById(`address-state-${i}`).value.trim();
-                    const zip = document.getElementById(`address-zip-${i}`).value.trim();
+                    if (!document.getElementById(`address-record-${i}`)) continue;
+                    const street  = document.getElementById(`address-street-${i}`).value.trim();
+                    const city    = document.getElementById(`address-city-${i}`).value.trim();
+                    const state   = document.getElementById(`address-state-${i}`).value.trim();
+                    const zip     = document.getElementById(`address-zip-${i}`).value.trim();
                     const country = document.getElementById(`address-country-${i}`).value.trim();
-                    const type = document.getElementById(`address-type-${i}`).value;
-
+                    const type    = document.getElementById(`address-type-${i}`).value;
                     if (street || city || state || zip || country) {
-                        vcard += `ADR;TYPE=${type}:;;${street};${city};${state};${zip};${country}\n`;
+                        vcardLines.push(`ADR;TYPE=${type}:;;${street};${city};${state};${zip};${country}`);
                     }
                 }
 
@@ -1359,124 +1348,117 @@
                 // 11. URLs
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.url; i++) {
-                    const rec = document.getElementById(`url-record-${i}`);
-                    if (!rec) continue;
-                    const url = document.getElementById(`url-address-${i}`).value.trim();
+                    if (!document.getElementById(`url-record-${i}`)) continue;
+                    const url  = document.getElementById(`url-address-${i}`).value.trim();
                     const type = document.getElementById(`url-type-${i}`).value;
-                    if (url) vcard += `URL;TYPE=${type}:${url}\n`;
+                    if (url) vcardLines.push(`URL;TYPE=${type}:${url}`);
                 }
 
                 // ---------------------------------------------------------------------------
-                // 12. Photos / Logos / Sounds  (only URL variant for brevity)
+                // 12. Photos, Logos, & Sounds
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.photo; i++) {
-                    const rec = document.getElementById(`photo-record-${i}`);
-                    if (!rec) continue;
-                    const fmt = document.getElementById(`photo-format-${i}`).value;
+                    if (!document.getElementById(`photo-record-${i}`)) continue;
+                    const fmt  = document.getElementById(`photo-format-${i}`).value;
                     const data = document.getElementById(`photo-data-${i}`).value.trim();
                     const kind = document.getElementById(`photo-type-${i}`).value === 'BASE64'
                         ? `ENCODING=b;TYPE=${fmt}`
                         : `VALUE=URI;TYPE=${fmt}`;
-                    if (data) vcard += `PHOTO;${kind}:${data}\n`;
+                    if (data) vcardLines.push(`PHOTO;${kind}:${data}`);
                 }
 
                 for (let i = 1; i <= recordCounters.logo; i++) {
-                    const rec = document.getElementById(`logo-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`logo-record-${i}`)) continue;
                     const url = document.getElementById(`logo-url-${i}`).value.trim();
-                    if (url) vcard += `LOGO;VALUE=URI:${url}\n`;
+                    if (url) vcardLines.push(`LOGO;VALUE=URI:${url}`);
                 }
 
                 for (let i = 1; i <= recordCounters.sound; i++) {
-                    const rec = document.getElementById(`sound-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`sound-record-${i}`)) continue;
                     const url = document.getElementById(`sound-url-${i}`).value.trim();
-                    if (url) vcard += `SOUND;VALUE=URI:${url}\n`;
+                    if (url) vcardLines.push(`SOUND;VALUE=URI:${url}`);
                 }
 
                 // ---------------------------------------------------------------------------
-                // 13. Birthdays & anniversaries
+                // 13. Dates
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.bday; i++) {
-                    const rec = document.getElementById(`bday-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`bday-record-${i}`)) continue;
                     const date = document.getElementById(`bday-date-${i}`).value;
-                    if (date) vcard += `BDAY:${date}\n`;
+                    if (date) vcardLines.push(`BDAY:${date}`);
                 }
 
                 for (let i = 1; i <= recordCounters.anniversary; i++) {
-                    const rec = document.getElementById(`anniversary-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`anniversary-record-${i}`)) continue;
                     const date = document.getElementById(`anniversary-date-${i}`).value;
-                    if (date) vcard += `ANNIVERSARY:${date}\n`;
+                    if (date) vcardLines.push(`ANNIVERSARY:${date}`);
                 }
 
                 // ---------------------------------------------------------------------------
                 // 14. Gender
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.gender; i++) {
-                    const rec = document.getElementById(`gender-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`gender-record-${i}`)) continue;
                     const g = document.getElementById(`gender-value-${i}`).value;
-                    if (g) vcard += `GENDER:${g}\n`;
+                    if (g) vcardLines.push(`GENDER:${g}`);
                 }
 
                 // ---------------------------------------------------------------------------
-                // 15. IMPP (instant-messaging URIs)
+                // 15. IMPP
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.impp; i++) {
-                    const rec = document.getElementById(`impp-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`impp-record-${i}`)) continue;
                     const svc = document.getElementById(`impp-service-${i}`).value.toLowerCase();
-                    const id = document.getElementById(`impp-handle-${i}`).value.trim();
-                    if (id) vcard += `IMPP:${svc}:${id}\n`;
+                    const id  = document.getElementById(`impp-handle-${i}`).value.trim();
+                    if (id) vcardLines.push(`IMPP:${svc}:${id}`);
                 }
 
                 // ---------------------------------------------------------------------------
-                // 16. GEO and TZ
+                // 16. GEO & TZ
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.geo; i++) {
-                    const rec = document.getElementById(`geo-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`geo-record-${i}`)) continue;
                     const lat = document.getElementById(`geo-lat-${i}`).value.trim();
                     const lon = document.getElementById(`geo-lon-${i}`).value.trim();
-                    if (lat && lon) vcard += `GEO:${lat};${lon}\n`;
+                    if (lat && lon) vcardLines.push(`GEO:${lat};${lon}`);
                 }
 
                 for (let i = 1; i <= recordCounters.tz; i++) {
-                    const rec = document.getElementById(`tz-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`tz-record-${i}`)) continue;
                     const tz = document.getElementById(`tz-value-${i}`).value.trim();
-                    if (tz) vcard += `TZ:${tz}\n`;
+                    if (tz) vcardLines.push(`TZ:${tz}`);
                 }
 
                 // ---------------------------------------------------------------------------
-                // 17. Encryption keys
+                // 17. Encryption Keys
                 // ---------------------------------------------------------------------------
                 for (let i = 1; i <= recordCounters.key; i++) {
-                    const rec = document.getElementById(`key-record-${i}`);
-                    if (!rec) continue;
+                    if (!document.getElementById(`key-record-${i}`)) continue;
                     const type = document.getElementById(`key-type-${i}`).value;
-                    const enc = document.getElementById(`key-encoding-${i}`).value;
+                    const enc  = document.getElementById(`key-encoding-${i}`).value;
                     const data = document.getElementById(`key-data-${i}`).value.trim();
-                    if (data) vcard += `KEY;TYPE=${type};ENCODING=${enc}:${data}\n`;
+                    if (data) vcardLines.push(`KEY;TYPE=${type};ENCODING=${enc}:${data}`);
                 }
 
                 // ---------------------------------------------------------------------------
-                // 18. Custom product-option fields (always exactly once)
+                // 18. Footer
                 // ---------------------------------------------------------------------------
-                const backColor = document.getElementById('backing-color').value;
-                const faceColor = document.getElementById('face-color').value;
-                const font = document.getElementById('font-family').value;
-                vcard += `X-BACKING-COLOR:${backColor}\n`;
-                vcard += `X-FACE-COLOR:${faceColor}\n`;
-                vcard += `X-FONT-FAMILY:${font}\n`;
+                vcardLines.push('END:VCARD');
+                const vcard = vcardLines.join('\n');
 
                 // ---------------------------------------------------------------------------
-                // 19. Footer & display
+                // 19. Wrap in JSON (no colors/fonts inside vCard)
                 // ---------------------------------------------------------------------------
-                vcard += 'END:VCARD';
+                const vcardJSON = {
+                    vcard,
+                    backingColor: document.getElementById('backing-color').value,
+                    faceColor:    document.getElementById('face-color').value,
+                    fontFamily:   document.getElementById('font-family').value
+                };
 
+                // ---------------------------------------------------------------------------
+                // 20. Display & persist
+                // ---------------------------------------------------------------------------
                 const out = document.getElementById('vcard-output');
                 out.textContent = vcard;
                 out.style.display = 'block';
