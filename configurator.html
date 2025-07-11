@@ -9,28 +9,7 @@ vcard += 'PRODID:-//Comtap//Comtap Customizer 1.0//EN\n';
 vcard += `REV:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z\n`;
 
 // Names
-<!--
-for (let i = 1; i <= recordCounters.name; i++) { const record=document.getElementById(`name-record-${i}`); if (record) {
-    const first=document.getElementById(`name-first-${i}`).value; const
-    last=document.getElementById(`name-last-${i}`).value; const
-    middle=document.getElementById(`name-middle-${i}`).value; const
-    prefix=document.getElementById(`name-prefix-${i}`).value; const
-    suffix=document.getElementById(`name-suffix-${i}`).value; if (first || last) { vcard
-    +=`N:${last};${first};${middle};${prefix};${suffix}\n`; vcard +=`FN:${prefix} ${first} ${middle} ${last}
-    ${suffix}`.replace(/\s+/g, ' ' ).trim() + '\n' ; } } } // Nicknames for (let i=1; i <=recordCounters.nickname; i++)
-    { const record=document.getElementById(`nickname-record-${i}`); if (record) { const
-    nickname=document.getElementById(`nickname-value-${i}`).value; if (nickname) { vcard +=`NICKNAME:${nickname}\n`; } }
-    } // Titles for (let i=1; i <=recordCounters.title; i++) { const
-    record=document.getElementById(`title-record-${i}`); if (record) { const
-    title=document.getElementById(`title-value-${i}`).value; if (title) { vcard +=`TITLE:${title}\n`; } } } // Roles for
-    (let i=1; i <=recordCounters.role; i++) { const record=document.getElementById(`role-record-${i}`); if (record) {
-    const role=document.getElementById(`role-value-${i}`).value; if (role) { vcard +=`ROLE:${role}\n`; } } } //
-    Organizations for (let i=1; i <=recordCounters.org; i++) { const record=document.getElementById(`org-record-${i}`);
-    if (record) { const name=document.getElementById(`org-name-${i}`).value; const
-    department=document.getElementById(`org-department-${i}`).value; if (name) { vcard +=`ORG:${name}`; if (department)
-    { vcard +=`;${department}`; } vcard +='\n' ; } } } // Categories for (let i=1; i <=recordCounters.category; i++) {
-    const record=document.getElementById(`category-record-${i}`); if
--->
+
     <!DOCTYPE html>
     <html lang="en">
 
