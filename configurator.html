@@ -1,4 +1,83 @@
-<!DOCTYPE html>
+// vCard generation
+        function generateVCard() {
+            let vcard = 'BEGIN:VCARD\nVERSION:3.0\n';
+            
+            // Add production identifier
+            vcard += 'PRODID:-//Comtap//Comtap Customizer 1.0//EN\n';
+            
+            // Add revision timestamp
+            vcard += `REV:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z\n`;
+            
+            // Names
+            for (let i = 1; i <= recordCounters.name; i++) {
+                const record = document.getElementById(`name-record-${i}`);
+                if (record) {
+                    const first = document.getElementById(`name-first-${i}`).value;
+                    const last = document.getElementById(`name-last-${i}`).value;
+                    const middle = document.getElementById(`name-middle-${i}`).value;
+                    const prefix = document.getElementById(`name-prefix-${i}`).value;
+                    const suffix = document.getElementById(`name-suffix-${i}`).value;
+                    
+                    if (first || last) {
+                        vcard += `N:${last};${first};${middle};${prefix};${suffix}\n`;
+                        vcard += `FN:${prefix} ${first} ${middle} ${last} ${suffix}`.replace(/\s+/g, ' ').trim() + '\n';
+                    }
+                }
+            }
+            
+            // Nicknames
+            for (let i = 1; i <= recordCounters.nickname; i++) {
+                const record = document.getElementById(`nickname-record-${i}`);
+                if (record) {
+                    const nickname = document.getElementById(`nickname-value-${i}`).value;
+                    if (nickname) {
+                        vcard += `NICKNAME:${nickname}\n`;
+                    }
+                }
+            }
+            
+            // Titles
+            for (let i = 1; i <= recordCounters.title; i++) {
+                const record = document.getElementById(`title-record-${i}`);
+                if (record) {
+                    const title = document.getElementById(`title-value-${i}`).value;
+                    if (title) {
+                        vcard += `TITLE:${title}\n`;
+                    }
+                }
+            }
+            
+            // Roles
+            for (let i = 1; i <= recordCounters.role; i++) {
+                const record = document.getElementById(`role-record-${i}`);
+                if (record) {
+                    const role = document.getElementById(`role-value-${i}`).value;
+                    if (role) {
+                        vcard += `ROLE:${role}\n`;
+                    }
+                }
+            }
+            
+            // Organizations
+            for (let i = 1; i <= recordCounters.org; i++) {
+                const record = document.getElementById(`org-record-${i}`);
+                if (record) {
+                    const name = document.getElementById(`org-name-${i}`).value;
+                    const department = document.getElementById(`org-department-${i}`).value;
+                    if (name) {
+                        vcard += `ORG:${name}`;
+                        if (department) {
+                            vcard += `;${department}`;
+                        }
+                        vcard += '\n';
+                    }
+                }
+            }
+            
+            // Categories
+            for (let i = 1; i <= recordCounters.category; i++) {
+                const record = document.getElementById(`category-record-${i}`);
+                if<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -254,7 +333,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>vCard Customizer</h1>
+        <h1>Comtap Customizer</h1>
         
         <div id="vcard-form">
             <!-- Contact Information Sections -->
@@ -308,6 +387,90 @@
             </div>
             
             <div class="section">
+                <h3 class="section-title">Nicknames</h3>
+                <div id="nickname-section">
+                    <button class="add-button" onclick="addNicknameRecord()">Add Nickname</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Roles</h3>
+                <div id="role-section">
+                    <button class="add-button" onclick="addRoleRecord()">Add Role</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Categories</h3>
+                <div id="category-section">
+                    <button class="add-button" onclick="addCategoryRecord()">Add Category</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Photos</h3>
+                <div id="photo-section">
+                    <button class="add-button" onclick="addPhotoRecord()">Add Photo</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Logos</h3>
+                <div id="logo-section">
+                    <button class="add-button" onclick="addLogoRecord()">Add Logo</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Sounds</h3>
+                <div id="sound-section">
+                    <button class="add-button" onclick="addSoundRecord()">Add Sound</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Birthdate</h3>
+                <div id="bday-section">
+                    <button class="add-button" onclick="addBdayRecord()">Add Birthday</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Anniversary</h3>
+                <div id="anniversary-section">
+                    <button class="add-button" onclick="addAnniversaryRecord()">Add Anniversary</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Gender</h3>
+                <div id="gender-section">
+                    <button class="add-button" onclick="addGenderRecord()">Add Gender</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Instant Messaging</h3>
+                <div id="impp-section">
+                    <button class="add-button" onclick="addImppRecord()">Add IM Contact</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Geographic Location</h3>
+                <div id="geo-section">
+                    <button class="add-button" onclick="addGeoRecord()">Add Location</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Time Zone</h3>
+                <div id="tz-section">
+                    <button class="add-button" onclick="addTzRecord()">Add Time Zone</button>
+                </div>
+            </div>
+            
+            <div class="section">
                 <h3 class="section-title">Notes</h3>
                 <div id="note-section">
                     <button class="add-button" onclick="addNoteRecord()">Add Note</button>
@@ -333,36 +496,36 @@
                         <div class="form-group">
                             <label>Font</label>
                             <select id="font-family">
-                                <option value="SF Pro Display">SF Pro Display</option>
-                                <option value="SF Pro Text">SF Pro Text</option>
-                                <option value="SF Compact Display">SF Compact Display</option>
-                                <option value="SF Compact Text">SF Compact Text</option>
-                                <option value="SF Mono">SF Mono</option>
-                                <option value="New York">New York</option>
-                                <option value="Helvetica Neue">Helvetica Neue</option>
-                                <option value="Helvetica">Helvetica</option>
-                                <option value="Arial">Arial</option>
-                                <option value="Avenir Next">Avenir Next</option>
-                                <option value="Avenir">Avenir</option>
-                                <option value="Menlo">Menlo</option>
-                                <option value="Monaco">Monaco</option>
-                                <option value="Courier New">Courier New</option>
-                                <option value="Times New Roman">Times New Roman</option>
-                                <option value="Times">Times</option>
-                                <option value="Palatino">Palatino</option>
-                                <option value="Georgia">Georgia</option>
-                                <option value="Trebuchet MS">Trebuchet MS</option>
-                                <option value="Verdana">Verdana</option>
-                                <option value="Futura">Futura</option>
-                                <option value="Optima">Optima</option>
-                                <option value="Gill Sans">Gill Sans</option>
-                                <option value="Lucida Grande">Lucida Grande</option>
-                                <option value="Chalkboard SE">Chalkboard SE</option>
-                                <option value="Marker Felt">Marker Felt</option>
-                                <option value="Noteworthy">Noteworthy</option>
-                                <option value="Papyrus">Papyrus</option>
-                                <option value="Brush Script MT">Brush Script MT</option>
-                                <option value="Zapfino">Zapfino</option>
+                                <option value="SF Pro Display" style="font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;">SF Pro Display</option>
+                                <option value="SF Pro Text" style="font-family: 'SF Pro Text', system-ui, -apple-system, sans-serif;">SF Pro Text</option>
+                                <option value="SF Compact Display" style="font-family: 'SF Compact Display', system-ui, -apple-system, sans-serif;">SF Compact Display</option>
+                                <option value="SF Compact Text" style="font-family: 'SF Compact Text', system-ui, -apple-system, sans-serif;">SF Compact Text</option>
+                                <option value="SF Mono" style="font-family: 'SF Mono', monospace;">SF Mono</option>
+                                <option value="New York" style="font-family: 'New York', serif;">New York</option>
+                                <option value="Helvetica Neue" style="font-family: 'Helvetica Neue', sans-serif;">Helvetica Neue</option>
+                                <option value="Helvetica" style="font-family: 'Helvetica', sans-serif;">Helvetica</option>
+                                <option value="Arial" style="font-family: 'Arial', sans-serif;">Arial</option>
+                                <option value="Avenir Next" style="font-family: 'Avenir Next', sans-serif;">Avenir Next</option>
+                                <option value="Avenir" style="font-family: 'Avenir', sans-serif;">Avenir</option>
+                                <option value="Menlo" style="font-family: 'Menlo', monospace;">Menlo</option>
+                                <option value="Monaco" style="font-family: 'Monaco', monospace;">Monaco</option>
+                                <option value="Courier New" style="font-family: 'Courier New', monospace;">Courier New</option>
+                                <option value="Times New Roman" style="font-family: 'Times New Roman', serif;">Times New Roman</option>
+                                <option value="Times" style="font-family: 'Times', serif;">Times</option>
+                                <option value="Palatino" style="font-family: 'Palatino', serif;">Palatino</option>
+                                <option value="Georgia" style="font-family: 'Georgia', serif;">Georgia</option>
+                                <option value="Trebuchet MS" style="font-family: 'Trebuchet MS', sans-serif;">Trebuchet MS</option>
+                                <option value="Verdana" style="font-family: 'Verdana', sans-serif;">Verdana</option>
+                                <option value="Futura" style="font-family: 'Futura', sans-serif;">Futura</option>
+                                <option value="Optima" style="font-family: 'Optima', sans-serif;">Optima</option>
+                                <option value="Gill Sans" style="font-family: 'Gill Sans', sans-serif;">Gill Sans</option>
+                                <option value="Lucida Grande" style="font-family: 'Lucida Grande', sans-serif;">Lucida Grande</option>
+                                <option value="Chalkboard SE" style="font-family: 'Chalkboard SE', fantasy;">Chalkboard SE</option>
+                                <option value="Marker Felt" style="font-family: 'Marker Felt', fantasy;">Marker Felt</option>
+                                <option value="Noteworthy" style="font-family: 'Noteworthy', fantasy;">Noteworthy</option>
+                                <option value="Papyrus" style="font-family: 'Papyrus', fantasy;">Papyrus</option>
+                                <option value="Brush Script MT" style="font-family: 'Brush Script MT', cursive;">Brush Script MT</option>
+                                <option value="Zapfino" style="font-family: 'Zapfino', cursive;">Zapfino</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -370,6 +533,12 @@
                             <div id="color-preview" style="padding: 20px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold; transition: all 0.3s ease;">
                                 Sample Text / QR Code Area
                             </div>
+                        </div>
+                        <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                            <strong>⚠️ Color Matching Disclaimer:</strong>
+                            <p style="margin: 5px 0 0 0; font-size: 14px; color: #856404;">
+                                Color matching will be performed to the best of our ability. Custom or currently unavailable color schemes may result in longer ordering and shipping times.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -393,7 +562,20 @@
             org: 0,
             title: 0,
             note: 0,
-            custom: 0
+            custom: 0,
+            nickname: 0,
+            role: 0,
+            category: 0,
+            photo: 0,
+            logo: 0,
+            sound: 0,
+            bday: 0,
+            anniversary: 0,
+            gender: 0,
+            impp: 0,
+            geo: 0,
+            tz: 0,
+            key: 0
         };
 
         // Validation functions
@@ -689,9 +871,285 @@
             document.getElementById('note-section').insertAdjacentHTML('beforeend', html);
         }
 
-        function addCustomRecord() {
-            // This function is no longer needed as customizations are now fixed fields
-            console.log('Custom records are now handled as fixed fields');
+        function addNicknameRecord() {
+            const id = ++recordCounters.nickname;
+            const html = `
+                <div class="record" id="nickname-record-${id}">
+                    <div class="record-header">
+                        <strong>Nickname ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('nickname-record-${id}')">Remove</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Nickname</label>
+                        <input type="text" id="nickname-value-${id}" placeholder="Brentster">
+                    </div>
+                </div>
+            `;
+            document.getElementById('nickname-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addRoleRecord() {
+            const id = ++recordCounters.role;
+            const html = `
+                <div class="record" id="role-record-${id}">
+                    <div class="record-header">
+                        <strong>Role ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('role-record-${id}')">Remove</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <input type="text" id="role-value-${id}" placeholder="Edge-AI Solutions Architect">
+                    </div>
+                </div>
+            `;
+            document.getElementById('role-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addCategoryRecord() {
+            const id = ++recordCounters.category;
+            const html = `
+                <div class="record" id="category-record-${id}">
+                    <div class="record-header">
+                        <strong>Category ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('category-record-${id}')">Remove</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Categories (comma-separated)</label>
+                        <input type="text" id="category-value-${id}" placeholder="Technology,AI,Innovation">
+                    </div>
+                </div>
+            `;
+            document.getElementById('category-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addPhotoRecord() {
+            const id = ++recordCounters.photo;
+            const html = `
+                <div class="record" id="photo-record-${id}">
+                    <div class="record-header">
+                        <strong>Photo ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('photo-record-${id}')">Remove</button>
+                    </div>
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label>Photo Type</label>
+                            <select id="photo-type-${id}">
+                                <option value="URL">URL</option>
+                                <option value="BASE64">Base64 Encoded</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Image Format</label>
+                            <select id="photo-format-${id}">
+                                <option value="JPEG">JPEG</option>
+                                <option value="PNG">PNG</option>
+                                <option value="GIF">GIF</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Photo Data</label>
+                        <textarea id="photo-data-${id}" rows="3" placeholder="https://example.com/photo.jpg or base64 encoded data"></textarea>
+                    </div>
+                </div>
+            `;
+            document.getElementById('photo-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addLogoRecord() {
+            const id = ++recordCounters.logo;
+            const html = `
+                <div class="record" id="logo-record-${id}">
+                    <div class="record-header">
+                        <strong>Logo ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('logo-record-${id}')">Remove</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Logo URL</label>
+                        <input type="url" id="logo-url-${id}" placeholder="https://example.com/logo.jpg" onblur="validateUrlField(this)">
+                    </div>
+                </div>
+            `;
+            document.getElementById('logo-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addSoundRecord() {
+            const id = ++recordCounters.sound;
+            const html = `
+                <div class="record" id="sound-record-${id}">
+                    <div class="record-header">
+                        <strong>Sound ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('sound-record-${id}')">Remove</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Sound URL</label>
+                        <input type="url" id="sound-url-${id}" placeholder="https://example.com/pronunciation.wav" onblur="validateUrlField(this)">
+                    </div>
+                </div>
+            `;
+            document.getElementById('sound-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addBdayRecord() {
+            const id = ++recordCounters.bday;
+            const html = `
+                <div class="record" id="bday-record-${id}">
+                    <div class="record-header">
+                        <strong>Birthday ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('bday-record-${id}')">Remove</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Birth Date</label>
+                        <input type="date" id="bday-date-${id}">
+                    </div>
+                </div>
+            `;
+            document.getElementById('bday-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addAnniversaryRecord() {
+            const id = ++recordCounters.anniversary;
+            const html = `
+                <div class="record" id="anniversary-record-${id}">
+                    <div class="record-header">
+                        <strong>Anniversary ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('anniversary-record-${id}')">Remove</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Anniversary Date</label>
+                        <input type="date" id="anniversary-date-${id}">
+                    </div>
+                </div>
+            `;
+            document.getElementById('anniversary-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addGenderRecord() {
+            const id = ++recordCounters.gender;
+            const html = `
+                <div class="record" id="gender-record-${id}">
+                    <div class="record-header">
+                        <strong>Gender ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('gender-record-${id}')">Remove</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="gender-value-${id}">
+                            <option value="">Select Gender</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                            <option value="O">Other</option>
+                            <option value="N">Not specified</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            document.getElementById('gender-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addImppRecord() {
+            const id = ++recordCounters.impp;
+            const html = `
+                <div class="record" id="impp-record-${id}">
+                    <div class="record-header">
+                        <strong>IM Contact ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('impp-record-${id}')">Remove</button>
+                    </div>
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label>Service</label>
+                            <select id="impp-service-${id}">
+                                <option value="Skype">Skype</option>
+                                <option value="Matrix">Matrix</option>
+                                <option value="Discord">Discord</option>
+                                <option value="Telegram">Telegram</option>
+                                <option value="WhatsApp">WhatsApp</option>
+                                <option value="Signal">Signal</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Username/Handle</label>
+                            <input type="text" id="impp-handle-${id}" placeholder="username">
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('impp-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addGeoRecord() {
+            const id = ++recordCounters.geo;
+            const html = `
+                <div class="record" id="geo-record-${id}">
+                    <div class="record-header">
+                        <strong>Location ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('geo-record-${id}')">Remove</button>
+                    </div>
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label>Latitude</label>
+                            <input type="number" id="geo-lat-${id}" placeholder="35.6528" step="any">
+                        </div>
+                        <div class="form-group">
+                            <label>Longitude</label>
+                            <input type="number" id="geo-lon-${id}" placeholder="-97.4781" step="any">
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('geo-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addTzRecord() {
+            const id = ++recordCounters.tz;
+            const html = `
+                <div class="record" id="tz-record-${id}">
+                    <div class="record-header">
+                        <strong>Time Zone ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('tz-record-${id}')">Remove</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Time Zone Offset</label>
+                        <input type="text" id="tz-value-${id}" placeholder="-05:00">
+                    </div>
+                </div>
+            `;
+            document.getElementById('tz-section').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addKeyRecord() {
+            const id = ++recordCounters.key;
+            const html = `
+                <div class="record" id="key-record-${id}">
+                    <div class="record-header">
+                        <strong>Encryption Key ${id}</strong>
+                        <button class="remove-button" onclick="removeRecord('key-record-${id}')">Remove</button>
+                    </div>
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label>Key Type</label>
+                            <select id="key-type-${id}">
+                                <option value="PGP">PGP</option>
+                                <option value="GPG">GPG</option>
+                                <option value="X509">X.509</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Encoding</label>
+                            <select id="key-encoding-${id}">
+                                <option value="b">Base64</option>
+                                <option value="8bit">8bit</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Key Data</label>
+                        <textarea id="key-data-${id}" rows="4" placeholder="Base64 encoded key data"></textarea>
+                    </div>
+                </div>
+            `;
+            document.getElementById('key-section').insertAdjacentHTML('beforeend', html);
         }
 
         // Color validation and preview functions
