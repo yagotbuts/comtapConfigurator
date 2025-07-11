@@ -9,6 +9,7 @@ vcard += 'PRODID:-//Comtap//Comtap Customizer 1.0//EN\n';
 vcard += `REV:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z\n`;
 
 // Names
+<!--
 for (let i = 1; i <= recordCounters.name; i++) { const record=document.getElementById(`name-record-${i}`); if (record) {
     const first=document.getElementById(`name-first-${i}`).value; const
     last=document.getElementById(`name-last-${i}`).value; const
@@ -28,7 +29,9 @@ for (let i = 1; i <= recordCounters.name; i++) { const record=document.getElemen
     if (record) { const name=document.getElementById(`org-name-${i}`).value; const
     department=document.getElementById(`org-department-${i}`).value; if (name) { vcard +=`ORG:${name}`; if (department)
     { vcard +=`;${department}`; } vcard +='\n' ; } } } // Categories for (let i=1; i <=recordCounters.category; i++) {
-    const record=document.getElementById(`category-record-${i}`); if<!DOCTYPE html>
+    const record=document.getElementById(`category-record-${i}`); if
+-->
+    <!DOCTYPE html>
     <html lang="en">
 
     <head>
